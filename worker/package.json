@@ -1,0 +1,21 @@
+{
+  "name": "encoding_worker",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.160",
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "dev": "bun run index.ts"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.997.0",
+    "@aws-sdk/client-sqs": "^3.997.0",
+    "dotenv": "^17.3.1"
+  }
+}
