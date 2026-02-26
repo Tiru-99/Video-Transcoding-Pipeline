@@ -21,7 +21,7 @@ export const encodeVideo = async(
  const localPath = await downloadVideo( bucket , key , jobId ); 
  
  const tasks = RESOLUTIONS.map((resolution) => {
-   runContainer(jobId , localPath , resolution.name , resolution.scale)
+   runContainer(jobId , localPath , key , resolution.name , resolution.scale)
  }); 
  
  await Promise.all(tasks)
@@ -29,5 +29,6 @@ export const encodeVideo = async(
  console.log("All the encodings finished successfully");
 
  // aggregate into master m3u8 file 
+ // upload to s3 
  // clean the temp file 
 }

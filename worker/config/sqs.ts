@@ -67,33 +67,28 @@ export const queueInit = async () => {
                   ReceiptHandle,
                 })
               );
-
               continue;
             }
           }
 
           console.log("Processing message:", MessageId);
 
-          // 🔥 Spin Docker container here
           const encodingProps = { 
             ...getBucketMetadata(event) ,
             jobId : message.MessageId as string
           }
           
-          await encodeVideo(encodingProps); 
-          //start pipeline 
-          
-          // await processVideo(event);
+          await encodeVideo(encodingProps);  
 
-         //delete message after success 
-          // await client.send(
-          //   new DeleteMessageCommand({
-          //     QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
-          //     ReceiptHandle,
-          //   })
-          // );
+          // delete message after success 
+          await client.send(
+            new DeleteMessageCommand({
+              QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+              ReceiptHandle,
+            })
+          );
 
-          // console.log("Message deleted successfully");
+          console.log("Message deleted successfully");
 
         } catch (err) {
           console.error("Error processing single message:", err);

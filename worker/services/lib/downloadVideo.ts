@@ -9,11 +9,14 @@ export const downloadVideo = async (
   key: string,
   jobId: string
 ) => {
-  const jobPath = path.join(process.cwd(), "tmp", "job", jobId);
+  console.log("Coming into download part and the key here is", key);
 
+  const jobPath = path.join(process.cwd(), "tmp", "job", jobId);
   mkdirSync(jobPath, { recursive: true });
 
-  const filePath = path.join(jobPath, "input.mp4");
+  // extract filename
+  const fileName = path.basename(key);
+  const filePath = path.join(jobPath, fileName);
 
   const command = new GetObjectCommand({
     Bucket: bucket,

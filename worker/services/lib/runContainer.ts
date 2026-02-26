@@ -5,6 +5,7 @@ import { existsSync } from "fs";
 export function runContainer(
   jobId: string,
   inputPath: string,
+  key : string , 
   resolution: string,
   scale: string
 ): Promise<void> {
@@ -16,7 +17,7 @@ export function runContainer(
       return reject(new Error(`Job path does not exist: ${jobPath}`));
     }
 
-    const inputFileName = "input.mp4";
+    const inputFileName = path.basename(key);
 
     const dockerArgs = [
       "run",
