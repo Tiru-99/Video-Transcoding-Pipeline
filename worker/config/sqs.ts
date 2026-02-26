@@ -60,13 +60,7 @@ export const queueInit = async () => {
           if ("Service" in event && "Event" in event) {
             if (event.Event === "s3:TestEvent") {
               console.log("Ignoring test event");
-
-              await client.send(
-                new DeleteMessageCommand({
-                  QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
-                  ReceiptHandle,
-                })
-              );
+              await deleteMessage(client , ReceiptHandle); 
               continue;
             }
           }
@@ -79,15 +73,8 @@ export const queueInit = async () => {
           }
           
           await encodeVideo(encodingProps);  
-
           // delete message after success 
-          await client.send(
-            new DeleteMessageCommand({
-              QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
-              ReceiptHandle,
-            })
-          );
-
+          await deleteMessage(client , ReceiptHandle); 
           console.log("Message deleted successfully");
 
         } catch (err) {
@@ -114,4 +101,13 @@ const getBucketMetadata = (event: S3Event) => {
   );
   return { bucket, key };
 };
+
+const deleteMessage = async( client : SQSClient , ReceiptHandle : string) => {
+  await client.send(
+    new DeleteMessageCommand({
+      QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+      ReceiptHandle,
+    })
+  );
+}
   

@@ -1,5 +1,5 @@
 import { downloadVideo } from "./lib/downloadVideo"
-import { runContainer } from "./lib/runContainer"
+import { runAdaptiveContainer } from "./lib/runContainer"
 
 interface EncodingArgs { 
   bucket : string , 
@@ -18,17 +18,10 @@ export const encodeVideo = async(
 ) => {
  const { bucket , key , jobId}  = encodingArgs
  //path to downloaded video
- const localPath = await downloadVideo( bucket , key , jobId ); 
- 
- const tasks = RESOLUTIONS.map((resolution) => {
-   runContainer(jobId , localPath , key , resolution.name , resolution.scale)
- }); 
- 
- await Promise.all(tasks)
- 
- console.log("All the encodings finished successfully");
+ await downloadVideo( bucket , key , jobId ); 
+ await runAdaptiveContainer(jobId , key);
 
- // aggregate into master m3u8 file 
+ console.log("All the encodings finished successfully");
  // upload to s3 
  // clean the temp file 
 }
