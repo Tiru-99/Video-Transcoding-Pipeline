@@ -1,0 +1,4 @@
+AWS_ACCESS_KEY= your key 
+AWS_SECRET_ACCESS_KEY= your secret access key
+AWS_SQS_QUEUE_URL= your sqs queue url 
+AWS_S3_BUCKET_NAME= your bucket name 

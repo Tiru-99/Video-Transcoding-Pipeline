@@ -1,7 +1,0 @@
-Store the output in the different bucket again using a queue for good retries , also implement a good retry logic for uplaoding videos to s3 again 
-
-use some sepearte services here like 
-different for 480 p and other resolutions  , retry mechanism if something fails 
-because if one of resolutions failed the whole process has to be restarted again , 
-check for idempotency here as well , that if this exists in the s3 to avoid duplication 
-at the end add an aggregator service to aggregate the results into master m3u8 file which will be then used for streaming 

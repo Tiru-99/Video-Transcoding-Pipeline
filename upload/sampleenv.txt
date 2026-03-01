@@ -1,0 +1,5 @@
+AWS_ACCESS_KEY= your access key
+AWS_SECRET_ACCESS_KEY= your secret access key 
+AWS_BUCKET_NAME= your bucket name 
+AWS_BUCKET_NAME_SECOND= your second bucket name 
+AWS_REGION= your region
