@@ -14,9 +14,7 @@ It consists of three independent services:
 
 The architecture diagram is available in the root folder:
 
-```
-architecture.png
-```
+![Architecture Diagram](./architecture.png)
 
 It describes:
 
