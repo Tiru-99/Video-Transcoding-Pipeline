@@ -1,16 +1,16 @@
-# 🚀 Video Processing Microservices Architecture
+# Video Processing Microservices Architecture
 
 This project is a distributed video processing system built using **Bun**, **AWS S3**, **AWS SQS**, and **Docker-based workers**.
 
 It consists of three independent services:
 
-- 🎨 Frontend Service  
-- 📤 Upload Service  
-- ⚙️ Worker Service  
+- Frontend Service  
+- Upload Service  
+- Worker Service  
 
 ---
 
-# 🏗️ Architecture Overview
+# Architecture Overview
 
 The architecture diagram is available in the root folder:
 
@@ -22,18 +22,18 @@ Frontend → Upload Service → S3 (Temporary) → SQS → Worker → S3 (Perman
 
 ---
 
-# 🧩 System Flow
+# System Flow
 
 1. User uploads video via Frontend  
 2. Upload Service stores file in Temporary S3 bucket  
 3. S3 triggers an event → pushes message to SQS  
 4. Worker Service consumes SQS message  
-5. Worker processes video (Docker pipeline)  
+5. Worker processes video (Docker pipeline) using ffmpeg cli   
 6. Processed video uploaded to Permanent S3 bucket  
 
 ---
 
-# 🛠️ Tech Stack
+# Tech Stack
 
 - Runtime: Bun
 - Cloud: AWS S3, AWS SQS
@@ -42,7 +42,7 @@ Frontend → Upload Service → S3 (Temporary) → SQS → Worker → S3 (Perman
 
 ---
 
-# 📦 Project Structure
+# Project Structure
 
 ```
 root/
@@ -61,7 +61,7 @@ root/
 
 ---
 
-# ⚙️ Prerequisites
+# Prerequisites
 
 Make sure you have installed:
 
@@ -71,13 +71,13 @@ Make sure you have installed:
 
 ---
 
-# ☁️ AWS Setup (IMPORTANT)
+# AWS Setup (IMPORTANT)
 
-## 1️⃣ Create Two S3 Buckets
+## Create Two S3 Buckets
 
 You MUST create two buckets:
 
-### 🟡 Temporary Upload Bucket
+### Temporary Upload Bucket
 Used by Upload Service for raw uploads.
 
 Example:
@@ -85,7 +85,7 @@ Example:
 my-app-temp-uploads
 ```
 
-### 🟢 Permanent Upload Bucket
+### Permanent Upload Bucket
 Used by Worker Service for processed videos.
 
 Example:
@@ -95,7 +95,7 @@ my-app-processed-videos
 
 ---
 
-## 2️⃣ Create an SQS Queue
+## Create an SQS Queue
 
 Create a Standard SQS queue.
 
@@ -110,7 +110,7 @@ Copy:
 
 ---
 
-## 3️⃣ Connect S3 → SQS (CRITICAL STEP)
+## Connect S3 → SQS (CRITICAL STEP)
 
 You must configure Event Notification on the Temporary Upload Bucket.
 
@@ -133,7 +133,7 @@ Without this step, Worker will not receive messages.
 
 ---
 
-# 🔐 Environment Setup (ALL SERVICES)
+# Environment Setup (ALL SERVICES)
 
 Each service contains:
 
@@ -153,7 +153,7 @@ If `.env` is not configured properly, the service will fail.
 
 ---
 
-# 🎨 Frontend Service
+# Frontend Service
 
 ### Install
 
@@ -187,14 +187,6 @@ bun install
 bun run dev
 ```
 
-Required environment variables include:
-
-- AWS_ACCESS_KEY_ID
-- AWS_SECRET_ACCESS_KEY
-- AWS_REGION
-- TEMP_S3_BUCKET_NAME
-- SQS_QUEUE_URL
-
 ---
 
 # ⚙️ Worker Service (Docker Required)
@@ -219,6 +211,12 @@ cd worker-service
 bun install
 ```
 
+### Build The docker image 
+Make sure to build the docker image 
+```bash
+docker build -t ffmpeg-worker .
+```
+
 ### Run
 
 ```bash
@@ -227,7 +225,7 @@ bun run dev
 
 ---
 
-# 🐳 Worker Processing Pipeline
+# Worker Processing Pipeline
 
 Worker does the following:
 
@@ -238,7 +236,7 @@ Worker does the following:
 
 ---
 
-# ▶️ Running the Full System
+# Running the Full System
 
 Start services in this order:
 
@@ -256,17 +254,18 @@ Then:
 
 ---
 
-# 🧠 Key Concepts Used
+# Key Concepts Used
 
 - Event-driven architecture
 - Asynchronous processing with SQS
 - AWS S3 object storage
 - Distributed microservices
 - Dockerized media pipeline
+- Spawning docker containers using node_child 
 
 ---
 
-# 📌 Important Notes
+# Important Notes
 
 - Docker is mandatory for Worker Service
 - Two S3 buckets are required
@@ -275,7 +274,3 @@ Then:
 - Bun must be installed globally
 
 ---
-
-# 📄 License
-
-MIT License
