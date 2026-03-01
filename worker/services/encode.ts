@@ -2,7 +2,7 @@ import { downloadVideo } from "./lib/downloadVideo"
 import { runAdaptiveContainer } from "./lib/runContainer"
 import { upload } from "../utils/upload"
 import path from "path"; 
-import fs from "fs"; 
+
 
 interface EncodingArgs { 
   bucket : string , 
