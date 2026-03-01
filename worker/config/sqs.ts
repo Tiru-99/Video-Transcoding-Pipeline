@@ -7,23 +7,12 @@ dotenv.config({
   path : "./.env"
 }); 
 
-if(!process.env.AWS_ACCESS_KEY){
-  throw new Error("No aws access key found");
-}
-
-if( !process.env.AWS_SECRET_ACCESS_KEY){
-  throw new Error("No aws secret access key found"); 
-}
-
-if(!process.env.AWS_SQS_QUEUE_URL){
-  throw new Error("No sqs queue url found"); 
-}
 
 const client = new SQSClient({
-  region :"ap-south-1", 
+  region :process.env.AWS_REGION, 
   credentials : {
-    accessKeyId : process.env.AWS_ACCESS_KEY, 
-    secretAccessKey : process.env.AWS_SECRET_ACCESS_KEY
+    accessKeyId : process.env.AWS_ACCESS_KEY!, 
+    secretAccessKey : process.env.AWS_SECRET_ACCESS_KEY!
   }
 });
 
